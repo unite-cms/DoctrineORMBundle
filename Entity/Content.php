@@ -2,6 +2,7 @@
 
 namespace UniteCMS\DoctrineORMBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use UniteCMS\CoreBundle\Content\FieldData;
 use UniteCMS\CoreBundle\Content\ContentInterface;
@@ -29,6 +30,13 @@ class Content implements ContentInterface
      * @ORM\Column(type="json_document", options={"jsonb": true})
      */
     protected $data;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $deleted = null;
 
     /**
      * Content constructor.
@@ -76,5 +84,22 @@ class Content implements ContentInterface
     public function getFieldData(string $fieldName): ?FieldData
     {
         return isset($this->data[$fieldName]) ? $this->data[$fieldName] : null;
+    }
+
+    /**
+     * @param DateTime|null $deleted
+     * @return $this
+     */
+    public function setDeleted(?DateTime $deleted = null) : self {
+        $this->deleted = $deleted;
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDeleted(): ?DateTime
+    {
+        return $this->deleted;
     }
 }
